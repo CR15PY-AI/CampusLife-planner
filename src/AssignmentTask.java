@@ -1,42 +1,28 @@
-public class AssignmentTask {
-    String title;
-    Course course;
-    int estimatedHours;
+public class AssignmentTask extends PlanItem{
     int daysUntilDue;
-    boolean completed;
 
     public AssignmentTask(String title, Course course, int estimatedHours, int daysUntilDue) {
-        this.title = title;
-        this.course = course;
-        this.estimatedHours = estimatedHours;
+        super(title, course, estimatedHours);
         this.daysUntilDue = daysUntilDue;
-        this.completed = false;
     }
-    public String getTitle() {
-        return title;
-    }
-    public Course getCourse() {
-        return course;
-    }
-    public int getEstimatedHours() {
-        return estimatedHours;
-    }
-    public int getDaysUntilDue() {
-        return daysUntilDue;
-    }
-    public boolean isCompleted() {
-        return completed;
-    }
-    public void markCompleted() {
-        this.completed = true;
-    }
+
     public boolean isUrgent() {
         return daysUntilDue <= 2 && !completed;
     }
-
+    @Override
+    public int calculateUrgency() {
+        if (completed) return 100;           // уже сделано → не срочно
+        if (daysUntilDue <= 1) return 1;     // очень срочно
+        if (daysUntilDue <= 3) return 3;
+        if (daysUntilDue <= 7) return 7;
+        return 10;
+    }
     @Override
     public String toString() {
         return "AssignmentTask[title='" + title + "', " + "course='" + (course.getName()) + "', " + "estHours=" + estimatedHours + ", " + "dueIn=" + daysUntilDue + ", " + "completed=" + completed + "]" ;
+    }
+    public int getDaysUntilDue() {
+        return daysUntilDue;
     }
 }
 
